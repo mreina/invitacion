@@ -1,20 +1,26 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invitación AR</title>
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ar.js@1.7.2/aframe/build/aframe-ar.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación Digital con RA</title>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ar.js@1.7.2/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <div id="container">
-        <h1>🌟 ¡Te invitamos al gran lanzamiento! 🌟</h1>
-        <p>Apunta la cámara a este marcador para ver el modelo en AR:</p>
-        <img src="https://res.cloudinary.com/dwarqkmfr/image/upload/v1743779716/Alebrije_rqkcu6.png" width="200px" alt="Marcador AR">
-        <br><br>
-        <a href="ar.html" class="button">🎉 Iniciar AR</a>
-    </div>
+  <!-- A-Frame Scene para RA -->
+  <a-scene embedded arjs="sourceType: webcam; trackingMethod: best;">
+    
+    <!-- Marcador AR (puedes cambiar el preset o usar un marcador personalizado) -->
+    <a-marker preset="hiro">
+      <!-- Contenido de la invitación en 3D (puedes usar un modelo .glb o una imagen) -->
+      <a-entity gltf-model="url(modelo_invitacion.glb)" scale="0.5 0.5 0.5" position="0 0 0"></a-entity>
+      <a-text value="¡Estás invitado a nuestro evento!" position="0 1 0" scale="5 5 5" color="#FF0000"></a-text>
+    </a-marker>
+
+    <!-- Cámara para RA -->
+    <a-entity camera></a-entity>
+
+  </a-scene>
 </body>
 </html>
