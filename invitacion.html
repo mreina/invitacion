@@ -8,20 +8,21 @@
   </head>
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs>
-      <a-assets>
-        <a-asset-item id="tree-obj" src="models/invitacion.obj"></a-asset-item>
-        <a-asset-item id="tree-mtl" src="models/invitacion.mtl"></a-asset-item>
-      </a-assets>
-
-      <a-marker preset="hiro">
-        <a-entity obj-model="obj: #tree-obj; mtl: #tree-mtl"
-                  scale="0.05 0.05 0.05"
-                  position="0 0 0"
-                  rotation="0 0 0">
-        </a-entity>
-      </a-marker>
-
-      <a-entity camera></a-entity>
-    </a-scene>
+    <a-assets>
+      <a-asset-item id="model" src="models/invitacion_secundaria.glb"></a-asset-item>
+    </a-assets>
+  
+    <!-- Reemplaza el src con la URL directa a tu .patt -->
+    <a-marker type="pattern" url="https://res.cloudinary.com/dwarqkmfr/raw/upload/v1743791898/alebrije_umrs0p.patt">
+      <a-entity 
+        gltf-model="#model" 
+        scale="0.5 0.5 0.5" 
+        position="0 0 0" 
+        rotation="0 180 0">
+      </a-entity>
+    </a-marker>
+  
+    <a-entity camera></a-entity>
+  </a-scene>
   </body>
 </html>
