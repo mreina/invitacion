@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invitación WebAR</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@webxr-polyfill/webxr-polyfill@latest/dist/webxr-polyfill.min.js"></script>
+    <title>Invitación AR</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/AR.js/aframe/build/aframe-ar.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body style="margin: 0; overflow: hidden;">
     <div id="container">
         <h1>🌟 ¡Te invitamos al gran lanzamiento! 🌟</h1>
-        <p>Escanea el código QR o haz clic en el botón para ver el modelo en Realidad Aumentada.</p>
-        <button id="start-ar">🎉 Iniciar AR</button>
+        <p>Apunta la cámara a este marcador para ver el modelo en AR:</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/17/Marker.png" width="200px" alt="Marcador AR">
+        <br><br>
+        <a href="ar.html" class="button">🎉 Iniciar AR</a>
     </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
