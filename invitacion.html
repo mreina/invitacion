@@ -8,23 +8,35 @@
   </head>
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs>
-    <a-assets>
-      <a-asset-item id="model" src="models/invitacion_secundaria_v4.glb"></a-asset-item>
-    </a-assets>
+      <a-assets>
+        <a-asset-item id="model" src="models/invitacion_secundaria_v4.glb"></a-asset-item>
+      </a-assets>
   
-    <!-- Reemplaza el src con la URL directa a tu .patt -->
-    <a-marker type="pattern" url="data/alebrije_upd.patt">
-      <a-entity 
-        gltf-model="#model" 
-        animation-mixer="clip: *; loop: repeat; timeScale: 1.2"
-        scale="5 5 5" 
-        position="0 0 0" 
-        rotation="0 0 0">
-      </a-entity>
-    </a-marker>
+      <!-- Reemplaza el src con la URL directa a tu .patt -->
+      <a-marker type="pattern" url="data/alebrije_upd.patt">
+        <a-entity 
+          id="animatedModel"
+          gltf-model="#model" 
+          animation-mixer="clip: *; loop: repeat; timeScale: 1.2"
+          scale="5 5 5" 
+          position="0 0 0" 
+          rotation="0 0 0">
+        </a-entity>
+      </a-marker>
   
-    <a-entity camera></a-entity>
-  </a-scene>
-    <script src="js/prueba.js"></script>
+      <a-entity camera></a-entity>
+    </a-scene>
+  
+    <script>
+      // Esperar a que el modelo se cargue antes de comenzar la animación
+      document.querySelector('#animatedModel').addEventListener('loaded', function () {
+        const model = document.querySelector('#animatedModel');
+        const mixer = model.components['animation-mixer'];
+        if (mixer) {
+          mixer.play();  // Asegura que la animación se reproduce
+        }
+      });
+    </script>
   </body>
 </html>
+
