@@ -22,17 +22,7 @@
   
       <a-entity camera></a-entity>
     </a-scene>
-  
-    <script>
-      // Esperar a que el modelo se cargue antes de comenzar la animación
-      document.querySelector('#animatedModel').addEventListener('loaded', function () {
-        const model = document.querySelector('#animatedModel');
-        const mixer = model.components['animation-mixer'];
-        if (mixer) {
-          mixer.play();  // Asegura que la animación se reproduce
-        }
-      });
-    </script>
+
   </body>
 </html>
 
