@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>Invitación AR Animada</title>
-    <!-- Solo cargamos A-Frame y AR.js -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
 </head>
@@ -14,22 +13,50 @@
         </a-assets>
 
         <a-marker preset="hiro">
-            <a-entity
+            <a-entity id="animated-model"
                 gltf-model="#model"
-                scale="0.5 0.5 0.5"
-                animation-mixer="clip: Esfera_0Action; loop: repeat"
-                autoplay="true">
+                scale="0.5 0.5 0.5">
             </a-entity>
         </a-marker>
 
         <a-entity camera></a-entity>
     </a-scene>
-    <!-- Fuerza la animación mediante JavaScript -->
-<script>
-  document.querySelector('[gltf-model]').addEventListener('loaded', function() {
-    this.components['animation-mixer'].play();
-      console.log("Animando");
-  });
-</script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const model = document.querySelector('#animated-model');
+            let mixer = null;
+
+            model.addEventListener('model-loaded', () => {
+                console.log("Modelo cargado");
+                
+                // Accedemos al modelo Three.js directamente
+                const obj = model.object3D;
+                const animations = model.components['gltf-model'].model.animations;
+                
+                if (animations && animations.length > 0) {
+                    console.log("Animaciones encontradas:", animations);
+                    
+                    // Creamos el AnimationMixer
+                    mixer = new THREE.AnimationMixer(obj);
+                    
+                    // Reproducimos todas las animaciones
+                    animations.forEach(clip => {
+                        const action = mixer.clipAction(clip);
+                        action.play();
+                        console.log("Reproduciendo animación:", clip.name);
+                    });
+                    
+                    // Actualizamos el mixer en cada frame
+                    model.setAttribute('animation-mixer', {timeScale: 1});
+                    model.sceneEl.addEventListener('tick', (e) => {
+                        if (mixer) mixer.update(e.detail.delta / 1000);
+                    });
+                } else {
+                    console.warn("No se encontraron animaciones en el modelo");
+                }
+            });
+        });
+    </script>
 </body>
 </html>
