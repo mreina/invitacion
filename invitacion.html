@@ -2,60 +2,70 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Invitación AR Animada</title>
+    <title>AR con Animación Cíclica</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs>
+    <a-scene 
+        embedded 
+        arjs="trackingMethod: best; sourceType: webcam;"
+        renderer="logarithmicDepthBuffer: true;"
+    >
         <a-assets>
             <a-asset-item id="model" src="models/animacion_personaje2.glb"></a-asset-item>
         </a-assets>
 
-        <a-marker preset="hiro">
-            <a-entity id="animated-model"
+        <!-- Marcador Hiro -->
+        <a-marker preset="hiro" emiteEvents="true">
+            <a-entity 
+                id="animated-model"
                 gltf-model="#model"
-                scale="0.5 0.5 0.5">
-            </a-entity>
+                scale="0.5 0.5 0.5"
+                position="0 0 0"
+                animation-mixer="clip: *; loop: repeat; crossFadeDuration: 0.5"
+            ></a-entity>
         </a-marker>
 
         <a-entity camera></a-entity>
     </a-scene>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const model = document.querySelector('#animated-model');
-            let mixer = null;
+        // 1. Configuración de animaciones con Three.js (para máximo control)
+        const model = document.querySelector('#animated-model');
+        let mixer = null;
 
-            model.addEventListener('model-loaded', () => {
-                console.log("Modelo cargado");
+        // 2. Cuando el modelo esté listo
+        model.addEventListener('model-loaded', () => {
+            const obj = model.object3D;
+            const animations = model.components['gltf-model'].model.animations;
+            
+            if (animations && animations.length > 0) {
+                console.log("Animaciones cargadas:", animations.map(a => a.name));
                 
-                // Accedemos al modelo Three.js directamente
-                const obj = model.object3D;
-                const animations = model.components['gltf-model'].model.animations;
+                // 3. Configurar mixer para animaciones cíclicas
+                mixer = new THREE.AnimationMixer(obj);
                 
-                if (animations && animations.length > 0) {
-                    console.log("Animaciones encontradas:", animations);
-                    
-                    // Creamos el AnimationMixer
-                    mixer = new THREE.AnimationMixer(obj);
-                    
-                    // Reproducimos todas las animaciones
-                    animations.forEach(clip => {
-                        const action = mixer.clipAction(clip);
-                        action.play();
-                        console.log("Reproduciendo animación:", clip.name);
-                    });
-                    
-                    // Actualizamos el mixer en cada frame
-                    model.setAttribute('animation-mixer', {timeScale: 1});
-                    model.sceneEl.addEventListener('tick', (e) => {
-                        if (mixer) mixer.update(e.detail.delta / 1000);
-                    });
-                } else {
-                    console.warn("No se encontraron animaciones en el modelo");
-                }
-            });
+                animations.forEach(clip => {
+                    const action = mixer.clipAction(clip);
+                    action.setLoop(THREE.LoopRepeat, Infinity); // Infinito
+                    action.clampWhenFinished = false; // Evita pausas
+                    action.play();
+                });
+
+                // 4. Actualizar mixer en cada frame
+                model.sceneEl.addEventListener('tick', (e) => {
+                    if (mixer) mixer.update(e.detail.delta / 1000);
+                });
+            }
+        });
+
+        // 5. Forzar actualización cuando el marcador es visible
+        document.querySelector('a-marker').addEventListener('markerFound', () => {
+            if (mixer) {
+                mixer.timeScale = 1.0; // Velocidad normal
+                console.log("Marcador visible - Animaciones activadas");
+            }
         });
     </script>
 </body>
