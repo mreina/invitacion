@@ -2,74 +2,94 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>AR con Animación Cíclica</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <title>AR Animado Funcional</title>
+    <!-- Solo A-Frame + AR.js - NO cargues componentes adicionales -->
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        a-scene { height: 100vh; width: 100vw; }
+    </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
+<body>
+    <!-- Escena AR optimizada para móviles -->
     <a-scene 
-        embedded 
-        arjs="trackingMethod: best; sourceType: webcam;"
-        renderer="logarithmicDepthBuffer: true;"
+        vr-mode-ui="enabled: false"
+        arjs="sourceType: webcam; debugUIEnabled: false;"
+        renderer="logarithmicDepthBuffer: true; antialias: true;"
     >
         <a-assets>
             <a-asset-item id="model" src="models/animacion_personaje2.glb"></a-asset-item>
         </a-assets>
 
-        <a-marker preset="hiro" emiteEvents="true">
-            <a-entity 
-                id="animated-model"
+        <!-- Marcador Hiro con detección mejorada -->
+        <a-marker preset="hiro">
+            <a-entity
+                id="modelo-animado"
                 gltf-model="#model"
                 scale="0.5 0.5 0.5"
-                position="0 0 0"
-                animation-mixer="clip: *; loop: repeat; crossFadeDuration: 0.5; timeScale: 1"
+                position="0 0.5 0"
+                animation-mixer="clip: *; loop: repeat; timeScale: 1"
             ></a-entity>
         </a-marker>
 
         <a-entity camera></a-entity>
     </a-scene>
 
+    <!-- Script de control robusto -->
     <script>
-        // 1. Esperar a que todo esté listo
         document.addEventListener('DOMContentLoaded', () => {
-            const model = document.querySelector('#animated-model');
+            const model = document.getElementById('modelo-animado');
             let mixer = null;
+            let markerVisible = false;
 
-            // 2. Cuando el modelo se cargue
+            // Configuración para iOS
+            if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                model.setAttribute('animation-mixer', 'clip: *; loop: repeat; timeScale: 0.8');
+            }
+
+            // Control de animación mejorado
             model.addEventListener('model-loaded', () => {
-                console.log("Modelo cargado con éxito");
+                console.log('Modelo completamente cargado');
                 
-                // 3. Acceder al sistema de animación directamente
-                const animations = model.components['gltf-model'].model.animations;
-                if (animations && animations.length > 0) {
-                    console.log("Animaciones disponibles:", animations.map(a => a.name));
-                    
-                    // 4. Configurar el mixer manualmente
-                    mixer = new THREE.AnimationMixer(model.object3D);
-                    
-                    animations.forEach(clip => {
+                // Acceso directo a Three.js
+                const obj = model.object3D;
+                obj.traverse(child => {
+                    if (child.isMesh) {
+                        child.castShadow = true;
+                    }
+                });
+
+                // Sistema de animación manual
+                if (model.components['gltf-model'].model.animations.length > 0) {
+                    mixer = new THREE.AnimationMixer(obj);
+                    model.components['gltf-model'].model.animations.forEach(clip => {
                         const action = mixer.clipAction(clip);
                         action.setLoop(THREE.LoopRepeat, Infinity);
                         action.clampWhenFinished = false;
                         action.play();
-                        console.log(`Animación "${clip.name}" configurada para bucle`);
                     });
 
-                    // 5. Actualizar el mixer en cada frame
-                    model.sceneEl.addEventListener('tick', function(e) {
-                        if (mixer) {
+                    // Actualización constante
+                    model.sceneEl.addEventListener('tick', (e) => {
+                        if (mixer && markerVisible) {
                             mixer.update(e.detail.delta / 1000);
                         }
                     });
                 }
             });
 
-            // 6. Reiniciar animaciones cuando el marcador es visible
+            // Detección de marcador más precisa
             document.querySelector('a-marker').addEventListener('markerFound', () => {
-                if (mixer) {
-                    mixer.timeScale = 1;
-                    console.log("Marcador detectado - Animaciones activadas");
-                }
+                markerVisible = true;
+                if (mixer) mixer.timeScale = 1;
+                console.log('Marcador detectado - Animación ACTIVADA');
+            });
+
+            document.querySelector('a-marker').addEventListener('markerLost', () => {
+                markerVisible = false;
+                console.log('Marcador perdido - Animación PAUSADA');
             });
         });
     </script>
