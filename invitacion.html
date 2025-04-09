@@ -26,20 +26,18 @@
       <a-entity camera></a-entity>
     </a-scene>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-          const model = document.querySelector('#animatedModel');
-      
-          model.addEventListener('model-loaded', () => {
-            console.log("Modelo cargado.");
-            // Aplica la animación con nombre exacto
-            model.setAttribute('animation-mixer', {
-              clip: 'Armature|mixamo.com|Layer0',
-              loop: 'repeat',
-              timeScale: 1.2
-            });
-          });
+      document.addEventListener('DOMContentLoaded', () => {
+        const model = document.querySelector('#animatedModel');
+
+        model.addEventListener('model-loaded', () => {
+          console.log("Modelo cargado.");
+          model.setAttribute(
+            'animation-mixer',
+            "clip: Armature|mixamo.com|Layer0; loop: repeat; timeScale: 1.2"
+          );
         });
-      </script>
+      });
+    </script>
   </body>
 </html>
 
