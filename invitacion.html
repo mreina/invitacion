@@ -5,37 +5,37 @@
     <title>Invitación con AR.js</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
-    <!-- ¡No cargues aframe-animation-component.min.js manualmente! -->
   </head>
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs>
       <a-assets>
         <a-asset-item id="model" src="models/animacion_personaje2.glb"></a-asset-item>
       </a-assets>
-  
+
       <a-marker preset="hiro">
         <a-entity 
           id="animatedModel"
           gltf-model="#model"
-          scale="0.5 0.5 0.5" 
-          position="0 0 0" 
+          scale="0.5 0.5 0.5"
+          position="0 0 0"
           rotation="0 0 0"
-          animation-mixer="clip: *; loop: repeat"> <!-- Usa '*' para todas las animaciones -->
+          animation-mixer="clip: PersonajeAction; loop: repeat"> <!-- Nombre exacto del clip -->
         </a-entity>
       </a-marker>
-  
+
       <a-entity camera></a-entity>
     </a-scene>
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const model = document.querySelector('#animatedModel');
-    
+        
         model.addEventListener('model-loaded', () => {
-          console.log("Modelo cargado correctamente.");
-          // Verifica las animaciones disponibles
-          const modelObj = model.components['gltf-model'].model;
-          if (modelObj) {
-            console.log("Animaciones disponibles:", modelObj.animations);
+          console.log("Modelo cargado. Animaciones:", 
+            model.components['gltf-model'].model.animations);
+          
+          // Fuerza la actualización del animation-mixer (opcional)
+          if (model.components['animation-mixer']) {
+            model.components['animation-mixer'].play();
           }
         });
       });
