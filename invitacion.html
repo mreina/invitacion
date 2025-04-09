@@ -16,8 +16,7 @@
       <a-marker type="pattern" url="data/pattern-Nantlico_Isotipo.patt">
         <a-entity 
           id="animatedModel"
-          gltf-model="#model" 
-          animation-mixer="clip: *; loop: repeat; timeScale: 1.2"
+          gltf-model="#model"
           scale="5 5 5" 
           position="0 0 0" 
           rotation="0 0 0">
@@ -26,20 +25,21 @@
   
       <a-entity camera></a-entity>
     </a-scene>
-  
     <script>
-      // Esperar a que el modelo se cargue antes de comenzar la animación
-      document.querySelector('#animatedModel').addEventListener('loaded', function () {
-        const model = document.querySelector('#animatedModel');
-        const mixer = model.components['animation-mixer'];
-         // Comprobar si la animación se ha cargado correctamente
-        if (mixer && mixer.el) {
-          console.log("Animación cargada y lista para reproducir.");
-        } else {
-          console.log("No se encontró el componente de animación.");
-        }
-      });
-    </script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const model = document.querySelector('#animatedModel');
+      
+          model.addEventListener('model-loaded', () => {
+            console.log("Modelo cargado.");
+            // Aplica la animación con nombre exacto
+            model.setAttribute('animation-mixer', {
+              clip: 'Armature|mixamo.com|Layer0',
+              loop: 'repeat',
+              timeScale: 1.2
+            });
+          });
+        });
+      </script>
   </body>
 </html>
 
