@@ -20,8 +20,9 @@
             <a-asset-item id="model" src="models/invitacion.fbx"></a-asset-item>
         </a-assets>
 
-        <!-- Marcador Hiro básico -->
-        <a-marker preset="hiro">
+       <a-marker 
+            type="pattern" 
+            url="data/volador.patt">
             <a-entity
                 gltf-model="#model"
                 scale="5 5 5"
