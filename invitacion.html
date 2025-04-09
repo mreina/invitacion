@@ -17,6 +17,7 @@
         <a-entity 
           id="animatedModel"
           gltf-model="#model"
+          animation-mixer="clip: PersonajeAction; loop: repeat; timeScale: 1"
           scale="0.5 0.5 0.5" 
           position="0 0 0" 
           rotation="0 0 0">
@@ -25,22 +26,6 @@
   
       <a-entity camera></a-entity>
     </a-scene>
-    <script>
-      const model = document.querySelector('#animatedModel');
-      const clips = ["Esfera_0Action", "Esfera_1Action", "Esfera_2Action", "PersonajeAction"];
-      let index = 0;
-      
-      function playNext() {
-        if (index >= clips.length) index = 0;
-        model.setAttribute('animation-mixer', `clip: ${clips[index]}; loop: once;`);
-        index++;
-        // Espera ~1.3s entre animaciones (ajústalo según duración real)
-        setTimeout(playNext, 1300);
-      }
-      model.addEventListener('model-loaded', () => {
-        playNext();
-      });
-    </script>
   </body>
 </html>
 
