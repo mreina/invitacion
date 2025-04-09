@@ -51,6 +51,7 @@
                     action.setLoop(THREE.LoopRepeat, Infinity); // Infinito
                     action.clampWhenFinished = false; // Evita pausas
                     action.play();
+                    console.log("Reproduciendo animación:", clip.name);
                 });
 
                 // 4. Actualizar mixer en cada frame
