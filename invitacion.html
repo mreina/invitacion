@@ -26,17 +26,19 @@
       <a-entity camera></a-entity>
     </a-scene>
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const model = document.querySelector('#animatedModel');
-    
-        model.addEventListener('model-loaded', () => {
-          console.log("Modelo cargado.");
-          // Activa la animación 'Action'
-          model.setAttribute(
-            'animation-mixer',
-            'clip: PersonajeAction; loop: repeat; timeScale: 1'
-          );
-        });
+      const model = document.querySelector('#animatedModel');
+      const clips = ["Esfera_0Action", "Esfera_1Action", "Esfera_2Action", "PersonajeAction"];
+      let index = 0;
+      
+      function playNext() {
+        if (index >= clips.length) index = 0;
+        model.setAttribute('animation-mixer', `clip: ${clips[index]}; loop: once;`);
+        index++;
+        // Espera ~1.3s entre animaciones (ajústalo según duración real)
+        setTimeout(playNext, 1300);
+      }
+      model.addEventListener('model-loaded', () => {
+        playNext();
       });
     </script>
   </body>
