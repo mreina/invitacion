@@ -5,8 +5,8 @@
     <title>Invitación AR Animada</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js/aframe/build/aframe-ar.min.js"></script>
-    <!-- Importamos el componente de animación directamente desde A-Frame -->
-    <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.0/dist/aframe-extras.animation-mixer.min.js"></script>
+    <!-- Usamos la versión estable de animation-mixer -->
+    <script src="https://cdn.jsdelivr.net/npm/aframe-animation-component@5.1.2/dist/aframe-animation-component.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs='detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
@@ -19,8 +19,7 @@
                 gltf-model="#animatedModel"
                 scale="0.5 0.5 0.5"
                 position="0 0 0"
-                animation-mixer="clip: PersonajeAction; loop: repeat; clampWhenFinished: false"
-                autoplay="true">
+                animation-mixer="clip: PersonajeAction; loop: repeat; clampWhenFinished: false">
             </a-entity>
         </a-marker>
 
@@ -28,11 +27,20 @@
     </a-scene>
 
     <script>
-        document.querySelector('a-entity[gltf-model]').addEventListener('model-loaded', function() {
-            console.log("Modelo y animaciones cargadas correctamente");
-            // Forzar actualización de animaciones
-            this.components['animation-mixer'].mixer.timeScale = 1.0;
-            this.components['animation-mixer'].play();
+        document.addEventListener('DOMContentLoaded', () => {
+            const model = document.querySelector('[gltf-model]');
+            
+            model.addEventListener('loaded', () => {
+                console.log("Modelo completamente cargado y listo para animar");
+                
+                // Solución alternativa para forzar la animación
+                setTimeout(() => {
+                    if (model.components['animation-mixer']) {
+                        model.components['animation-mixer'].play();
+                        console.log("Animación iniciada manualmente");
+                    }
+                }, 500);
+            });
         });
     </script>
 </body>
