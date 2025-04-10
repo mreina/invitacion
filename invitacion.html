@@ -2,53 +2,86 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>AR con NFT Funcional</title>
+    <title>AR con Ajuste NFT</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
     <style>
-        .arjs-loader { height: 100vh; display: flex; justify-content: center; align-items: center; }
+        body { margin: 0; overflow: hidden; }
+        .arjs-loader { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: white; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
-   <a-scene arjs="trackingMethod: best; sourceType: webcam;">
-      <a-assets>
-        <!-- Modelo optimizado (reemplaza con el tuyo) -->
-        <a-asset-item id="model" 
-          src="models/Volador_FIJO.glb">
-        </a-asset-item>
-      </a-assets>
-    
-      <a-nft 
-        type="nft"
-        url="invitacion/nft/invitacion"
-        emiteEvents="true"
-      >
-        <a-entity
-          id="model-entity"
-          gltf-model="#model"
-          scale="1000 1000 1000"
-          position="0 0.5 0"
-          rotation="0 0 0"
-          visible="false"     
-        ></a-entity>
-      </a-nft>
-    
-      <a-entity camera></a-entity>
+    <a-scene 
+        vr-mode-ui="enabled: false"
+        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+        renderer="logarithmicDepthBuffer: true; antialias: true;"
+    >
+        <!-- Iluminación mejorada -->
+        <a-entity light="type: ambient; intensity: 0.8"></a-entity>
+        <a-entity light="type: directional; intensity: 1.5" position="-1 2 1"></a-entity>
+
+        <a-assets>
+            <a-asset-item id="model" src="models/Volador_FIJO.glb"></a-asset-item>
+        </a-assets>
+
+        <!-- Marcador NFT con ajustes especiales -->
+        <a-nft 
+            type="nft"
+            url="invitacion/nft/invitacion"
+            smooth="true"
+            smoothCount="5"
+            smoothTolerance="0.01"
+            emiteEvents="true"
+        >
+            <a-entity
+                id="model-entity"
+                gltf-model="#model"
+                scale="500 500 500" 
+                position="0 0.15 0" 
+                rotation="-90 0 0"   
+                shadow="receive: false"
+            ></a-entity>
+        </a-nft>
+
+        <a-entity camera></a-entity>
     </a-scene>
 
     <script>
-      const model = document.getElementById('model-entity');
-      
-      // Mostrar modelo cuando se detecte el marcador
-      document.querySelector('a-nft').addEventListener('markerFound', () => {
-        model.setAttribute('visible', 'true');
-        console.log("Modelo visible!");
-      });
-    
-      // Debuggeo de errores
-      model.addEventListener('model-error', (e) => {
-        console.error("Error en modelo:", e.detail);
-      });
+        // Ocultar loader y debuggear
+        const scene = document.querySelector('a-scene');
+        const model = document.getElementById('model-entity');
+        
+        scene.addEventListener('loaded', () => {
+            document.querySelector('.arjs-loader').style.display = 'none';
+            
+            // Debug: Ver posición en consola
+            setInterval(() => {
+                const pos = model.getAttribute('position');
+                console.log('Posición actual:', pos);
+            }, 2000);
+        });
+
+        // Ajustes específicos para NFT
+        document.querySelector('a-nft').addEventListener('markerFound', () => {
+            model.setAttribute('visible', 'true');
+            console.log("Modelo visible con NFT");
+            
+            // Ajuste adicional para algunos modelos
+            model.setAttribute('rotation', {
+                x: -90,
+                y: 0,
+                z: 0
+            });
+        });
     </script>
 </body>
 </html>
