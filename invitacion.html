@@ -73,13 +73,6 @@
         document.querySelector('a-nft').addEventListener('markerFound', () => {
             model.setAttribute('visible', 'true');
             console.log("Modelo visible con NFT");
-            
-            // Ajuste adicional para algunos modelos
-            model.setAttribute('rotation', {
-                x: -180,
-                y: 0,
-                z: 0
-            });
         });
         // Añade este script para ajustes en tiempo real
         const model = document.querySelector('[gltf-model]');
