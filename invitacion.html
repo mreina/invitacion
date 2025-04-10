@@ -40,8 +40,8 @@
             emiteEvents="true">
             <a-entity
                 gltf-model="#model"
-                scale="20 20 20"
-                position="0 0 0"
+                scale="1 1 1"
+                position="0 0 -20"
                 rotation="0 0 0"
                 gltf-model-node="normalize: true"
                 animation="property: rotation; 
@@ -67,30 +67,9 @@
                 console.log('Posición actual:', pos);
             }, 2000);
         });
-
         // Ajustes específicos para NFT
         document.querySelector('a-nft').addEventListener('markerFound', () => {
             console.log("Modelo visible con NFT");
-        });
-        // Añade este script para ajustes en tiempo real
-        const model2 = document.querySelector('[gltf-model]');
-        const marcadorA4 = {
-          ancho: 0.21,  // 21cm en metros
-          alto: 0.297   // 29.7cm en metros
-        };
-        
-        // Centrado automático considerando las dimensiones
-        model2.setAttribute('position', {
-          x: 0, 
-          y: marcadorA4.alto/2, 
-          z: 0
-        });
-        
-        // Debuggeo visual
-        console.log("Modelo centrado en:", {
-          x: 0,
-          y: marcadorA4.alto/2,
-          z: 0
         });
     </script>
 </body>
