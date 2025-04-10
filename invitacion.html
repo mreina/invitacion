@@ -10,30 +10,31 @@
     </style>
 </head>
 <body>
-    <a-scene 
-        vr-mode-ui="enabled: false"
-        arjs="trackingMethod: best; sourceType: webcam;"
-        renderer="logarithmicDepthBuffer: true;"
-    >
-        <a-assets>
-            <a-asset-item id="model" src="models/Volador_FIJO.glb"></a-asset-item>
-        </a-assets>
+   <a-scene arjs="trackingMethod: best; sourceType: webcam;">
+  <a-assets>
+    <!-- Modelo optimizado (reemplaza con el tuyo) -->
+    <a-asset-item id="model" 
+      src="models/Invitacion_FIJO.glb">
+    </a-asset-item>
+  </a-assets>
 
-        <!-- Configuración NFT CORRECTA -->
-        <a-nft 
-            type="nft"
-            url="invitacion/nft/invitacion" 
-            smooth="true"
-            emiteEvents="true">
-            <a-entity
-                gltf-model="#model"
-                scale="5 5 5"
-                position="0 0.5 0"
-            ></a-entity>
-        </a-nft>
+  <a-nft 
+    type="nft"
+    url="invitacion/nft/invitacion"
+    emiteEvents="true"
+  >
+    <a-entity
+      id="model-entity"
+      gltf-model="#model"
+      scale="5 5 5"
+      position="0 0.5 0"
+      rotation="0 180 0"
+      visible="false"     
+    ></a-entity>
+  </a-nft>
 
-        <a-entity camera></a-entity>
-    </a-scene>
+  <a-entity camera></a-entity>
+</a-scene>
 
     <script>
         // Verificación de carga
