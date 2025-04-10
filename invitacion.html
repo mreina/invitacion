@@ -46,7 +46,7 @@
                 gltf-model="#model"
                 scale="1500 1500 1500"
                 position="0 0.1485 0"
-                rotation="-90 0 0"
+                rotation="0 0 0"
                 gltf-model-node="normalize: true"
               ></a-entity>
         </a-nft>
@@ -75,14 +75,14 @@
             console.log("Modelo visible con NFT");
         });
         // Añade este script para ajustes en tiempo real
-        const model = document.querySelector('[gltf-model]');
+        const model2 = document.querySelector('[gltf-model]');
         const marcadorA4 = {
           ancho: 0.21,  // 21cm en metros
           alto: 0.297   // 29.7cm en metros
         };
         
         // Centrado automático considerando las dimensiones
-        model.setAttribute('position', {
+        model2.setAttribute('position', {
           x: 0, 
           y: marcadorA4.alto/2, 
           z: 0
