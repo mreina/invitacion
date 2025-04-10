@@ -44,9 +44,9 @@
         >
             <a-entity
                 gltf-model="#model"
-                scale="1 1 1"
+                scale="10 10 10"
                 position="0 0 0"
-                rotation="0 0 0"
+                rotation="-90 0 0"
                 gltf-model-node="normalize: true"
               ></a-entity>
         </a-nft>
@@ -71,7 +71,6 @@
 
         // Ajustes específicos para NFT
         document.querySelector('a-nft').addEventListener('markerFound', () => {
-            model.setAttribute('visible', 'true');
             console.log("Modelo visible con NFT");
         });
         // Añade este script para ajustes en tiempo real
