@@ -2,44 +2,35 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>AR con Marcador NFT</title>
+    <title>AR con NFT Funcional</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <!-- Versión específica para NFT -->
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
     <style>
-        body { margin: 0; overflow: hidden; }
         .arjs-loader { height: 100vh; display: flex; justify-content: center; align-items: center; }
     </style>
 </head>
 <body>
-    <!-- Pantalla de carga -->
-    <div class="arjs-loader">
-        <div>Cargando experiencia AR...</div>
-    </div>
+    <div class="arjs-loader">Cargando...</div>
 
-    <!-- Escena AR -->
     <a-scene 
         vr-mode-ui="enabled: false"
-        renderer="logarithmicDepthBuffer: true; antialias: true;"
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+        arjs="trackingMethod: best; sourceType: webcam;"
+        renderer="logarithmicDepthBuffer: true;"
     >
-        <!-- Assets -->
         <a-assets>
             <a-asset-item id="model" src="models/Volador_FIJO.glb"></a-asset-item>
         </a-assets>
 
-        <!-- Marcador NFT -->
+        <!-- Configuración NFT CORRECTA -->
         <a-nft 
             type="nft"
-            url="nft/invitacion"
+            url="nft/invitacion" 
             smooth="true"
-            smoothCount="10"
-            smoothTolerance="0.01"
-            smoothThreshold="5"
+            emiteEvents="true"
         >
             <a-entity
                 gltf-model="#model"
-                scale="0.5 0.5 0.5"
+                scale="5 5 5"
                 position="0 0.5 0"
             ></a-entity>
         </a-nft>
@@ -48,9 +39,16 @@
     </a-scene>
 
     <script>
-        // Ocultar loader cuando todo esté listo
-        document.querySelector('a-scene').addEventListener('loaded', () => {
+        // Verificación de carga
+        const nftMarker = document.querySelector('a-nft');
+        nftMarker.addEventListener('markerFound', () => {
+            console.log("¡Marcador detectado!");
             document.querySelector('.arjs-loader').style.display = 'none';
+        });
+        
+        nftMarker.addEventListener('error', (e) => {
+            console.error("Error NFT:", e.detail);
+            alert("Error cargando marcador. Verifica la consola.");
         });
     </script>
 </body>
