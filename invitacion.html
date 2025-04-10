@@ -2,32 +2,24 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>AR con FBX</title>
+    <title>AR con Marcador Personalizado</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@master/aframe/build/aframe-ar.js"></script>
-    <!-- Cargador de FBX para A-Frame -->
-    <script src="https://cdn.jsdelivr.net/npm/aframe-fbx-component@1.3.0/dist/aframe-fbx-component.min.js"></script>
 </head>
 <body>
-    <!-- Escena AR simplificada -->
-    <a-scene 
-        vr-mode-ui="enabled: false"
-        arjs="trackingMethod: best; sourceType: webcam;"
-        renderer="antialias: true;"
-    >
-        <!-- Modelo GLB estático -->
+    <a-scene arjs='detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
         <a-assets>
-            <a-asset-item id="model" src="models/invitacion.glb"></a-asset-item>
+            <a-asset-item id="model" src="invitacion.glb"></a-asset-item>
         </a-assets>
 
-       <a-marker 
+        <!-- Marcador personalizado -->
+        <a-marker 
             type="pattern" 
             url="data/volador.patt">
             <a-entity
                 gltf-model="#model"
                 scale="5 5 5"
-                position="0 0.5 0"
-                rotation="0 0 0"
+                position="0 0 0"
             ></a-entity>
         </a-marker>
 
