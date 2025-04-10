@@ -11,43 +11,44 @@
 </head>
 <body>
    <a-scene arjs="trackingMethod: best; sourceType: webcam;">
-  <a-assets>
-    <!-- Modelo optimizado (reemplaza con el tuyo) -->
-    <a-asset-item id="model" 
-      src="models/Invitacion_FIJO.glb">
-    </a-asset-item>
-  </a-assets>
-
-  <a-nft 
-    type="nft"
-    url="invitacion/nft/invitacion"
-    emiteEvents="true"
-  >
-    <a-entity
-      id="model-entity"
-      gltf-model="#model"
-      scale="5 5 5"
-      position="0 0.5 0"
-      rotation="0 180 0"
-      visible="false"     
-    ></a-entity>
-  </a-nft>
-
-  <a-entity camera></a-entity>
-</a-scene>
+      <a-assets>
+        <!-- Modelo optimizado (reemplaza con el tuyo) -->
+        <a-asset-item id="model" 
+          src="models/Invitacion_FIJO.glb">
+        </a-asset-item>
+      </a-assets>
+    
+      <a-nft 
+        type="nft"
+        url="invitacion/nft/invitacion"
+        emiteEvents="true"
+      >
+        <a-entity
+          id="model-entity"
+          gltf-model="#model"
+          scale="5 5 5"
+          position="0 0.5 0"
+          rotation="0 180 0"
+          visible="false"     
+        ></a-entity>
+      </a-nft>
+    
+      <a-entity camera></a-entity>
+    </a-scene>
 
     <script>
-        // Verificación de carga
-        const nftMarker = document.querySelector('a-nft');
-        nftMarker.addEventListener('markerFound', () => {
-            console.log("¡Marcador detectado!");
-            //document.querySelector('.arjs-loader').style.display = 'none';
-        });
-        
-        nftMarker.addEventListener('error', (e) => {
-            console.error("Error NFT:", e.detail);
-            alert("Error cargando marcador. Verifica la consola.");
-        });
+      const model = document.getElementById('model-entity');
+      
+      // Mostrar modelo cuando se detecte el marcador
+      document.querySelector('a-nft').addEventListener('markerFound', () => {
+        model.setAttribute('visible', 'true');
+        console.log("Modelo visible!");
+      });
+    
+      // Debuggeo de errores
+      model.addEventListener('model-error', (e) => {
+        console.error("Error en modelo:", e.detail);
+      });
     </script>
 </body>
 </html>
