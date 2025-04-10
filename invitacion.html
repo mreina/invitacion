@@ -2,26 +2,37 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>AR con Marcador Personalizado</title>
+    <title>AR con Modelo Verificado</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@master/aframe/build/aframe-ar.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.3.0/aframe/build/aframe-ar.js"></script>
 </head>
 <body>
-    <a-scene arjs='detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
+    <a-scene arjs='detectionMode: mono_and_matrix; matrixCodeType: 3x3;' loading-screen="enabled: false">
         <a-assets>
-            <a-asset-item id="model" src="models/invitacion.glb"></a-asset-item>
+            <!-- Modelo de prueba (reemplázalo luego con el tuyo) -->
+            <a-asset-item id="model" src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@master/assets/models/LittlestTokyo.glb"></a-asset-item>
         </a-assets>
 
-        <!-- Marcador personalizado -->
         <a-marker preset="hiro">
             <a-entity
+                id="model-entity"
                 gltf-model="#model"
-                scale="5 5 5"
-                position="0 0 0"
+                scale="0.05 0.05 0.05"
+                position="0 0.5 0"
             ></a-entity>
         </a-marker>
 
         <a-entity camera></a-entity>
     </a-scene>
+
+    <script>
+        document.querySelector('#model-entity').addEventListener('model-error', (e) => {
+            console.error("Error cargando modelo:", e.detail);
+            alert(`Error en el modelo: ${e.detail.message}. Usando modelo de respaldo.`);
+            
+            // Carga un modelo alternativo si falla
+            document.querySelector('#model').src = "https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@master/assets/models/LittlestTokyo.glb";
+        });
+    </script>
 </body>
 </html>
