@@ -10,8 +10,6 @@
     </style>
 </head>
 <body>
-    <div class="arjs-loader">Cargando...</div>
-
     <a-scene 
         vr-mode-ui="enabled: false"
         arjs="trackingMethod: best; sourceType: webcam;"
@@ -26,8 +24,7 @@
             type="nft"
             url="invitacion/nft/invitacion" 
             smooth="true"
-            emiteEvents="true"
-        >
+            emiteEvents="true">
             <a-entity
                 gltf-model="#model"
                 scale="5 5 5"
@@ -43,7 +40,7 @@
         const nftMarker = document.querySelector('a-nft');
         nftMarker.addEventListener('markerFound', () => {
             console.log("¡Marcador detectado!");
-            document.querySelector('.arjs-loader').style.display = 'none';
+            //document.querySelector('.arjs-loader').style.display = 'none';
         });
         
         nftMarker.addEventListener('error', (e) => {
