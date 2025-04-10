@@ -43,14 +43,12 @@
             emiteEvents="true"
         >
             <a-entity
-                id="model-entity"
                 gltf-model="#model"
-                scale="1500 1500 1500" 
-                position="0 0.15 0" 
-                rotation="0 0 0"   
-                shadow="receive: false"
+                scale="1500 1500 1500"
+                position="0 0.1485 0"
+                rotation="-90 0 0"
                 gltf-model-node="normalize: true"
-            ></a-entity>
+              ></a-entity>
         </a-nft>
 
         <a-entity camera></a-entity>
@@ -78,10 +76,30 @@
             
             // Ajuste adicional para algunos modelos
             model.setAttribute('rotation', {
-                x: 0,
+                x: -180,
                 y: 0,
                 z: 0
             });
+        });
+        // Añade este script para ajustes en tiempo real
+        const model = document.querySelector('[gltf-model]');
+        const marcadorA4 = {
+          ancho: 0.21,  // 21cm en metros
+          alto: 0.297   // 29.7cm en metros
+        };
+        
+        // Centrado automático considerando las dimensiones
+        model.setAttribute('position', {
+          x: 0, 
+          y: marcadorA4.alto/2, 
+          z: 0
+        });
+        
+        // Debuggeo visual
+        console.log("Modelo centrado en:", {
+          x: 0,
+          y: marcadorA4.alto/2,
+          z: 0
         });
     </script>
 </body>
