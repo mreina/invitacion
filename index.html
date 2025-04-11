@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación con RA</title>
+  <!-- Carga la librería de model-viewer desde CDN -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    model-viewer {
+      width: 100%;
+      height: 100%;
+      background-color: #f0f0f0;
+    }
+    .invitation-text {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <!-- Modelo 3D con soporte para RA -->
+  <model-viewer
+    src="https://modelviewer.dev/shared-assets/models/NeilArmstrong.glb"
+    alt="Modelo 3D de ejemplo"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    environment-image="neutral"
+    auto-rotate
+    shadow-intensity="1"
+  >
+    <div class="invitation-text">
+      <h1>¡Bienvenido a mi evento!</h1>
+      <p>Escanea este código QR para ver la sorpresa en RA.</p>
+    </div>
+  </model-viewer>
+</body>
+</html>
